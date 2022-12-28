@@ -1,3 +1,4 @@
+
  LPlr = game.Players.LocalPlayer
  MDown = false
  Mouse = LPlr:GetMouse()
@@ -143,15 +144,22 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 local Window = OrionLib:MakeWindow({Name = "Yemen Hub", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 
-
-
+local IMPORTANT = Window:MakeTab({
+    Name = "IMPORTANT",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+IMPORTANT:AddParagraph("General Information","I will be adding a lot more to this soon but this is just basic shit so u guys can have what I have :) (This also works in gyms)")
+IMPORTANT:AddParagraph("Pokemon Heal Information", "With the Pokemon Heal you MUST be in an area with an already existing pokecenter aka the thing that fucking heals your pokemon. ALSO DOES NOT WORK DURING A BATTLE!")
+IMPORTANT:AddParagraph("Miscellaneous", "All of the things in miscellaneous should work anywhere you go, if there isn't then dm me and I'll try to fix it. If I can't fix it then I'll just fucking delete the module")
+IMPORTANT:AddParagraph("Kick Information", "If you get kicked at anytime I'm like 99% sure it's not a ban, while making this script I was kicked about 1000 times and I'm still not banned. Its likely that you're just a fucking dumbass and did Pokemon Heal when there was no PokeCenter around.")
+IMPORTANT:AddParagraph("Made with Love from Yemen <3", "((((PS YOU'RE WELCOME!!))))")
 --pokemon modifications
 local Pokmeon = Window:MakeTab({
     Name = "Pokemon",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
-Pokmeon:AddParagraph("Pokemon Heal and General Information!","With the Pokemon Heal you MUST be in an area with an already existing pokecenter aka the thing that fucking heals your pokemon. ALSO DOES NOT WORK DURING A BATTLE! I will be adding a lot more to this soon but this is just basic shit so u guys can have what I have :) (This also works in gyms)")
 Pokmeon:AddButton({
     Name = "Heal All Pokemon",
     Default = false,
@@ -165,13 +173,14 @@ Pokmeon:AddButton({
     })
     end    
 })
-
+--changing char and other modifications to characters or environement.
 local Misc = Window:MakeTab({
     Name = "Miscellaneous",
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
-Misc:AddLabel("Works Anywhere Anytime")
+Misc:AddParagraph("Works Anywhere Anytime", "")
+
 Misc:AddToggle({
     Name = "Skip NPC Chats",
     Default = false,
