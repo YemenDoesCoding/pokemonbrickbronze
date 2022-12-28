@@ -139,6 +139,36 @@ end
     return Old(unpack(Args))
 end)
 
+local walkSpeed = 16
+ 
+ 
+ 
+local gmt = getrawmetatable(game)
+ 
+setreadonly(gmt, false)
+ 
+local oldindex = gmt.__index
+ 
+gmt.__index = newcclosure(function(self,b)
+ 
+if b == "WalkSpeed" then
+ 
+return 16
+ 
+end
+ 
+return oldindex(self,b)
+ 
+end)
+ 
+ 
+ 
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
+
+
+
+
+--gui 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local Window = OrionLib:MakeWindow({Name = "Yemen Hub", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
@@ -188,5 +218,36 @@ Misc:AddToggle({
     SkipChat = Value
     end    
 })
+
+local Movement = Window:MakeTab({
+    Name = "Movement",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+Movement:AddSlider({
+	Name = "Movement Speed",
+	Min = 0,
+	Max = 100,
+	Default = 16,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "bananas",
+	Callback = function(Value)
+		local walkSpeed = 16
+            local gmt = getrawmetatable(game)
+            setreadonly(gmt, false)
+            local oldindex = gmt.__index
+gmt.__index = newcclosure(function(self,b)
+if b == "WalkSpeed" then
+return 16
+end
+return oldindex(self,b)
+end)
+game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
+	end    
+})
+
+
 
 OrionLib:Innit()
