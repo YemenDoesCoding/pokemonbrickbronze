@@ -1,73 +1,80 @@
-LPlr = game.Players.LocalPlayer
-MDown = false
-Mouse = LPlr:GetMouse()
-function ConvertNumbers(X, Y)
-local TX = Mouse.ViewSizeX*X
-local TY = Mouse.ViewSizeY*Y
-return TX, TY
+ LPlr = game.Players.LocalPlayer
+ MDown = false
+ Mouse = LPlr:GetMouse()
+    function ConvertNumbers(X, Y)
+        local TX = Mouse.ViewSizeX*X
+        local TY = Mouse.ViewSizeY*Y
+    return TX, TY
 end
-local OriginalMaxAndMin = {LPlr.CameraMaxZoomDistance, LPlr.CameraMinZoomDistance}
-function MoveableItem(item)
-item.InputBegan:connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-MDown = true
-local CX, CY = ConvertNumbers(item.Position.X.Scale, item.Position.Y.Scale)
-item.Position = UDim2.new(0, item.Position.X.Offset+CX, 0, item.Position.Y.Offset+CY)
-local StartX = Mouse.X - item.Position.X.Offset
-local StartY = Mouse.Y - item.Position.Y.Offset
-while MDown == true do
-item.Position = UDim2.new(0, Mouse.X - StartX, 0, Mouse.Y - StartY)
-wait()
-end
-end
+    local OriginalMaxAndMin = {LPlr.CameraMaxZoomDistance, LPlr.CameraMinZoomDistance}
+        function MoveableItem(item)
+            item.InputBegan:connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            MDown = true
+        local CX, CY = ConvertNumbers(item.Position.X.Scale, item.Position.Y.Scale)
+        item.Position = UDim2.new(0, item.Position.X.Offset+CX, 0, item.Position.Y.Offset+CY)
+        local StartX = Mouse.X - item.Position.X.Offset
+        local StartY = Mouse.Y - item.Position.Y.Offset
+    while MDown == true do
+        item.Position = UDim2.new(0, Mouse.X - StartX, 0, Mouse.Y - StartY)
+        wait()
+        end
+    end
 end)
-item.InputEnded:connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 then
-MDown = false
+
+    item.InputEnded:connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            MDown = false
+            end
+        end)
+    end
+
+    function LockedCamera(Val)
+        local Dist = (game.Workspace.Camera.CoordinateFrame.p - LPlr.Character.Head.Position).Magnitude
+        LPlr.CameraMaxZoomDistance = Dist
+        LPlr.CameraMinZoomDistance = Dist
+        if Val ~= true then
+        LPlr.CameraMaxZoomDistance = OriginalMaxAndMin[1]
+        LPlr.CameraMinZoomDistance = OriginalMaxAndMin[2]
+    end
 end
+    function ChangePos(input, item, Amount)
+    local Pos = item.CanvasPosition
+    if Amount == nil then
+    Amount = 90
+
+end
+        Amount = Amount *-1
+            Pos = Pos + Vector2.new(0, input.Position.Z*Amount)
+            if Pos.Y < 0 then
+            Pos = Vector2.new(0, 0)
+            elseif Pos.Y > item.CanvasSize.Y.Offset then
+            Pos = Vector2.new(0, item.CanvasSize.Y.Offset)
+        end
+    item.CanvasPosition = Pos
+end
+
+        function ScrollableItem(item, Amount)
+            item.ScrollingEnabled = false
+            item.inputBegan:connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseWheel then
+            ChangePos(input, item, Amount)
+        end
+    end)
+
+        item.InputChanged:connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseWheel then
+        ChangePos(input, item, Amount)
+    end
 end)
-end
-function LockedCamera(Val)
-local Dist = (game.Workspace.Camera.CoordinateFrame.p - LPlr.Character.Head.Position).Magnitude
-LPlr.CameraMaxZoomDistance = Dist
-LPlr.CameraMinZoomDistance = Dist
-if Val ~= true then
-LPlr.CameraMaxZoomDistance = OriginalMaxAndMin[1]
-LPlr.CameraMinZoomDistance = OriginalMaxAndMin[2]
-end
-end
-function ChangePos(input, item, Amount)
-local Pos = item.CanvasPosition
-if Amount == nil then
-Amount = 90
-end
-Amount = Amount *-1
-Pos = Pos + Vector2.new(0, input.Position.Z*Amount)
-if Pos.Y < 0 then
-Pos = Vector2.new(0, 0)
-elseif Pos.Y > item.CanvasSize.Y.Offset then
-Pos = Vector2.new(0, item.CanvasSize.Y.Offset)
-end
-item.CanvasPosition = Pos
-end
-function ScrollableItem(item, Amount)
-item.ScrollingEnabled = false
-item.inputBegan:connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseWheel then
-ChangePos(input, item, Amount)
-end
+
+        item.MouseEnter:connect(function()
+    LockedCamera(true)
 end)
-item.InputChanged:connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseWheel then
-ChangePos(input, item, Amount)
-end
-end)
-item.MouseEnter:connect(function()
-LockedCamera(true)
-end)
-item.MouseLeave:connect(function()
-LockedCamera()
-end)
+
+         item.MouseLeave:connect(function()
+        LockedCamera()
+    end)
 end
 
 Get = game:GetService("ReplicatedStorage").GET
@@ -164,6 +171,7 @@ local Misc = Window:MakeTab({
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
+Misc:AddLabel("Works Anywhere Anytime")
 Misc:AddToggle({
     Name = "Skip NPC Chats",
     Default = false,
