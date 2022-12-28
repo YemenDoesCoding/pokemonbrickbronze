@@ -232,7 +232,7 @@ Movement:AddSlider({
 	Default = 16,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
-	ValueName = "",
+	ValueName = "Walk Speed",
 	Callback = function(Value)
 game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
 
