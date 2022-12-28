@@ -227,12 +227,12 @@ local Movement = Window:MakeTab({
 
 Movement:AddSlider({
 	Name = "Movement Speed",
-	Min = 0,
-	Max = 100,
+	Min = 16,
+	Max = 64,
 	Default = 16,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
-	ValueName = "bananas",
+	ValueName = "",
 	Callback = function(Value)
 		local walkSpeed = 16
             local gmt = getrawmetatable(game)
@@ -247,7 +247,6 @@ end)
 game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
 	end    
 })
-
 
 
 OrionLib:Innit()
