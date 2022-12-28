@@ -139,32 +139,14 @@ end
     return Old(unpack(Args))
 end)
 
-local walkSpeed = 16
- 
- 
- 
-local gmt = getrawmetatable(game)
- 
-setreadonly(gmt, false)
- 
-local oldindex = gmt.__index
- 
-gmt.__index = newcclosure(function(self,b)
- 
-if b == "WalkSpeed" then
- 
-return 16
- 
-end
- 
-return oldindex(self,b)
- 
+getgenv().WalkSpeedValue = 80; --set your desired walkspeed here
+local Player = game:service'Players'.LocalPlayer;
+Player.Character.Humanoid:GetPropertyChangedSignal'WalkSpeed':Connect(function()
+Player.Character.Humanoid.WalkSpeed = getgenv().WalkSpeedValue;
 end)
- 
- 
- 
-game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
-
+Player.Character.Humanoid.WalkSpeed = getgenv().WalkSpeedValue;
+	end    
+})
 
 
 
@@ -225,20 +207,15 @@ local Movement = Window:MakeTab({
     PremiumOnly = false
 })
 
-Movement:AddSlider({
-	Name = "Movement Speed",
-	Min = 16,
-	Max = 64,
-	Default = 16,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Walk Speed",
+Movement:AddToggle({
+	Name = "Move Faster!",
+	Default = false,
 	Callback = function(Value)
-game:GetService("Players").LocalPlayer.Character.Humanoid.WalkSpeed = walkSpeed
-
-	end    
+        while Movement:AddToggle == true 
+        getgenv().WalkSpeedValue = 80;
+    else 
+        getgenv().WalkSpeedValue = 16;
+    end
 })
-
-
 
 OrionLib:Innit()
